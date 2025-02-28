@@ -28,6 +28,7 @@ var (
 	exportVariables              bool
 	escapeJSON                   bool
 	ignoreVariables              []string
+	schemaID                     string
 )
 
 // rootCmd is the base command for terraschema
@@ -109,6 +110,9 @@ func init() {
 	rootCmd.Flags().StringSliceVar(&ignoreVariables, "ignore-variable", []string{},
 		"ignore a variable by name when generating schema or exporting variables,\n"+
 			"repeating this argument allows you to ignore multiple variables",
+	)
+	rootCmd.Flags().StringVar(&schemaID, "schema-id", "",
+		"set the $id field in the JSON Schema to a custom value",
 	)
 
 	rootCmd.SetFlagErrorFunc(func(cmd *cobra.Command, err error) error {

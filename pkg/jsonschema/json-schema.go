@@ -18,6 +18,7 @@ type CreateSchemaOptions struct {
 	SuppressLogging           bool
 	NullableAll               bool
 	IgnoreVariables           []string
+	SchemaID                  string
 }
 
 func CreateSchema(path string, options CreateSchemaOptions) (map[string]any, error) {
@@ -39,6 +40,10 @@ func CreateSchema(path string, options CreateSchemaOptions) (map[string]any, err
 	schemaOut["$schema"] = "http://json-schema.org/draft-07/schema#"
 	schemaOut["type"] = "object"
 	schemaOut["additionalProperties"] = options.AllowAdditionalProperties
+
+	if options.SchemaID != "" {
+		schemaOut["$id"] = options.SchemaID
+	}
 
 	properties := make(map[string]any)
 	requiredArray := []any{}

@@ -53,6 +53,41 @@ func TestCreateSchema(t *testing.T) {
 	}
 }
 
+func TestCreateSchemaID(t *testing.T) {
+	t.Parallel()
+	tfPath := "../../test/modules"
+	schemaPath := "../../test/expected"
+	testCases := []string{
+		"custom-id",
+	}
+	for i := range testCases {
+		name := testCases[i]
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			expected, err := os.ReadFile(filepath.Join(schemaPath, name, "schema.json"))
+			require.NoError(t, err)
+
+			result, err := CreateSchema(filepath.Join(tfPath, name), CreateSchemaOptions{
+				RequireAll:                false,
+				AllowAdditionalProperties: true,
+				AllowEmpty:                true,
+				NullableAll:               false,
+				IgnoreVariables:           []string{},
+				SchemaID:                  "https://github.com/HewlettPackard/terraschema/schema.json",
+			})
+			require.NoError(t, err)
+
+			var expectedMap map[string]any
+			err = json.Unmarshal(expected, &expectedMap)
+			require.NoError(t, err)
+
+			if d := cmp.Diff(expectedMap, result); d != "" {
+				t.Errorf("Schema has incorrect value (-want,+got):\n%s", d)
+			}
+		})
+	}
+}
+
 type errorLocation struct {
 	name            string
 	nestedLocations []errorLocation

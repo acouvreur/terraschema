@@ -80,6 +80,8 @@ running Terraform.
 
 - `--ignore-variable=<VAR_NAME>`: Ignore a variable with the name `VAR_NAME` in the schema. This can be used to exclude variables which are not intended to be used in the schema, such as those which are only used in the module itself. This flag can be used multiple times to ignore multiple variables.
 
+- `--schema-id=<ID>`: Set the `$id` field in the schema to `ID`. This can be used to set a unique identifier for the schema. By default, this field is not set. For more  information see https://json-schema.org/understanding-json-schema/basics#declaring-a-unique-identifier.
+
 # Design
 
 ### Parsing Terraform Configuration Files
